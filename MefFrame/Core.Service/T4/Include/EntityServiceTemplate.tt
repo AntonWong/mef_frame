@@ -1,0 +1,109 @@
+﻿<#+
+// <copyright file="EntityConfigurationTemplate.tt" company="HOBOR@中国">
+//  Copyright © HOBOR@中国. All Rights Reserved.
+// </copyright>
+
+public class EntityServiceTemplate : CSharpTemplate
+{
+    private T4ModelInfo _model;
+        
+    public EntityServiceTemplate(T4ModelInfo model)
+    {
+        _model = model;
+    }
+    /// <summary>
+    /// 获取 生成的文件名，根据模型名定义
+    /// </summary>
+    public string FileName
+    {
+        get
+        { 
+            return string.Format("{0}Service.cs", _model.Name);
+        }
+    }
+
+    public override string TransformText()
+    {
+#>
+//------------------------------------------------------------------------------
+// <copyright file="<#= _model.Name #>Configuration.generated.cs">
+//        生成时间：<#= DateTime.Now.ToString("yyyy-MM-dd HH:mm") #>
+// </copyright>
+//------------------------------------------------------------------------------
+using Core.Data.Repositories<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Data.Entity.ModelConfiguration;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using Component.Data;
+using Core.Models<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
+
+
+namespace Core.Service.Impl
+{
+    /// <summary>
+    /// ——<#= _model.Description #>
+    /// </summary>    
+    public partial class <#= _model.Name #>Service : CoreServiceBase, I<#= _model.Name #>Contract
+    {
+        #region 受保护属性 获取或设置数据访问对象
+
+        [Import]
+        protected I<#= _model.Name #>Repository <#= _model.Name #>Repository { get; set; }  
+ 
+        #endregion
+
+        #region 公共属性
+        /// <summary>
+        /// 数据对象
+        /// </summary>
+        public IQueryable<<#= _model.Name #>> <#= _model.Name #>s
+        {
+            get { return <#= _model.Name #>Repository.Entities; }
+        }
+
+        #endregion
+
+        #region 公共方法
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <returns></returns>
+        public int Insert(<#= _model.Name #> entity)
+        {
+            return <#= _model.Name #>Repository.Insert(entity);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="predicate">Lamda表达式</param>
+        /// <returns></returns>
+        public int Delete(Expression<Func<<#= _model.Name #>, bool>> predicate)
+        {
+            return <#= _model.Name #>Repository.Delete(predicate);
+        }
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="predicate1">Lamda表达式 条件</param>
+        /// <param name="predicate2">Lamda表达式 修改实体</param>
+        /// <returns></returns>
+        public int Update(Expression<Func<<#= _model.Name #>, bool>> predicate1, Expression<Func<<#= _model.Name #>, <#= _model.Name #>>> predicate2)
+        {
+            return <#= _model.Name #>Repository.Update(predicate1, predicate2);
+        }
+
+        #endregion
+       
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>

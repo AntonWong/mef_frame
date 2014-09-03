@@ -1,0 +1,60 @@
+﻿<#+
+public class IEntityServiceTemplate : CSharpTemplate
+{
+    private T4ModelInfo _model;
+        
+    public IEntityServiceTemplate(T4ModelInfo model)
+    {
+        _model = model;
+    }
+    /// <summary>
+    /// 获取 生成的文件名，根据模型名定义
+    /// </summary>
+    public string FileName
+    {
+        get
+        { 
+            return string.Format("I{0}Contract.cs", _model.Name);
+        }
+    }
+
+    public override string TransformText()
+    {
+#>
+//------------------------------------------------------------------------------
+// <copyright file="<#= _model.Name #>Configuration.generated.cs">
+//        生成时间：<#= DateTime.Now.ToString("yyyy-MM-dd HH:mm") #>
+// </copyright>
+//------------------------------------------------------------------------------
+using Core.Models<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using Component.Data;
+
+namespace Core.Service
+{
+    /// <summary>
+    /// ——<#= _model.Description #>
+    /// </summary>    
+    public interface I<#= _model.Name #>Contract
+    {
+       
+        //查询数据集
+        IQueryable<<#= _model.Name #>> <#= _model.Name #>s { get; }
+        //添加
+        int Insert(<#= _model.Name #> entity);
+        //删除
+        int Delete(Expression<Func<<#= _model.Name #>, bool>> predicate);
+        //修改
+        int Update(Expression<Func<<#= _model.Name #>, bool>> predicate1, Expression<Func<<#= _model.Name #>, <#= _model.Name #>>> predicate2);
+       
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+    }
+}
+#>
