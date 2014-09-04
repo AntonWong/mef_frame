@@ -1,7 +1,4 @@
 ﻿<#+
-// <copyright file="EntityConfigurationTemplate.tt" company="HOBOR@中国">
-//  Copyright © HOBOR@中国. All Rights Reserved.
-// </copyright>
 
 public class EntityServiceTemplate : CSharpTemplate
 {
@@ -26,9 +23,7 @@ public class EntityServiceTemplate : CSharpTemplate
     {
 #>
 //------------------------------------------------------------------------------
-// <copyright file="<#= _model.Name #>Configuration.generated.cs">
-//        生成时间：<#= DateTime.Now.ToString("yyyy-MM-dd HH:mm") #>
-// </copyright>
+//Copyright ©车易拍-公共服务组团队. All Rights Reserved.
 //------------------------------------------------------------------------------
 using Core.Data.Repositories<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
 using System;
@@ -79,23 +74,27 @@ namespace Core.Service.Impl
             return <#= _model.Name #>Repository.Insert(entity);
         }
         /// <summary>
-        /// 删除
+        /// 删除-根据ID删除实体
         /// </summary>
-        /// <param name="predicate">Lamda表达式</param>
-        /// <returns></returns>
-        public int Delete(Expression<Func<<#= _model.Name #>, bool>> predicate)
+        /// <param name="predicate"> 查询条件谓语表达式 </param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns> 操作影响的行数 </returns>
+         public int Delete(int id,bool isSave=false)
         {
-            return <#= _model.Name #>Repository.Delete(predicate);
+            //return <#= _model.Name #>Repository.Delete(m=>m.Id==id,isSave);
+            return 0;
         }
         /// <summary>
-        /// 修改
+        /// 修改-根据ID修改实体
         /// </summary>
-        /// <param name="predicate1">Lamda表达式 条件</param>
-        /// <param name="predicate2">Lamda表达式 修改实体</param>
+        /// <param name="id">主键ID</param>
+        /// <param name="updateExpression">Lamda表达式 修改实体</param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns></returns>
-        public int Update(Expression<Func<<#= _model.Name #>, bool>> predicate1, Expression<Func<<#= _model.Name #>, <#= _model.Name #>>> predicate2)
+        public int Update(int id, Expression<Func<<#= _model.Name #>, <#= _model.Name #>>> updateExpression,bool isSave=false)
         {
-            return <#= _model.Name #>Repository.Update(predicate1, predicate2);
+            //return <#= _model.Name #>Repository.Update(m=>m.Id==id, updateExpression, isSave);
+            return 0;
         }
 
         #endregion

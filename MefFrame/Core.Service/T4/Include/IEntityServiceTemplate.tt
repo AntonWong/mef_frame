@@ -22,9 +22,7 @@ public class IEntityServiceTemplate : CSharpTemplate
     {
 #>
 //------------------------------------------------------------------------------
-// <copyright file="<#= _model.Name #>Configuration.generated.cs">
-//        生成时间：<#= DateTime.Now.ToString("yyyy-MM-dd HH:mm") #>
-// </copyright>
+//Copyright ©车易拍-公共服务组团队. All Rights Reserved.
 //------------------------------------------------------------------------------
 using Core.Models<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
 using System;
@@ -46,11 +44,23 @@ namespace Core.Service
         IQueryable<<#= _model.Name #>> <#= _model.Name #>s { get; }
         //添加
         int Insert(<#= _model.Name #> entity);
-        //删除
-        int Delete(Expression<Func<<#= _model.Name #>, bool>> predicate);
-        //修改
-        int Update(Expression<Func<<#= _model.Name #>, bool>> predicate1, Expression<Func<<#= _model.Name #>, <#= _model.Name #>>> predicate2);
-       
+        /// <summary>
+        ///  删除-根据ID删除实体
+        /// </summary>
+        /// <param name="predicate"> 查询条件谓语表达式 </param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns> 操作影响的行数 </returns>
+        int Delete(int id,bool isSave=false);
+        /// <summary>
+
+        ///  修改-根据ID修改实体
+        /// </summary>
+        /// <param name="id">主键ID</param>
+        /// <param name="updateExpression">Lamda表达式 修改实体</param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns></returns>
+        int Update(int id, Expression<Func<<#= _model.Name #>, <#= _model.Name #>>> updateExpression,bool isSave=false);
+   
     }
 }
 <#+
