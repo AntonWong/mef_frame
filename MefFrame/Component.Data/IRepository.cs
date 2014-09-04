@@ -85,6 +85,11 @@ namespace Component.Data
         /// <returns> 符合编号的记录，不存在返回null </returns>
         TEntity GetByKey(object key);
 
+        int DeleteBySql(Expression<Func<TEntity, bool>> predicate, bool isSave = false);
+
+        int Update(Expression<Func<TEntity, object>> propertyExpression,
+            bool isSave = false, params TEntity[] entities);
+
         #endregion
     }
 }

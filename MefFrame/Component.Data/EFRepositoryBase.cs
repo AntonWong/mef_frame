@@ -149,6 +149,19 @@ namespace Component.Data
             return EFContext.Set<TEntity>().Find(key);
         }
 
+        public virtual int DeleteBySql(Expression<Func<TEntity, bool>> predicate, bool isSave = false)
+        {
+            EFContext.DeleteBySql(predicate);
+            return isSave ? EFContext.Commit() : 0;
+        }
+
+        public virtual int Update(Expression<Func<TEntity, object>> propertyExpression,
+            bool isSave = false, params TEntity[] entities)
+        {
+            EFContext.Update(propertyExpression,entities);
+            return isSave ? EFContext.Commit() : 0;
+        }
+
         #endregion
     }
 }

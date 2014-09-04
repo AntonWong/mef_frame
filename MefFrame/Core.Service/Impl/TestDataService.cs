@@ -68,12 +68,20 @@ namespace Core.Service.Impl
         /// <returns></returns>
         public int Delete(Expression<Func<TestData, bool>> predicate)
         {
-            return TestDataRepository.Delete(predicate);
+            return TestDataRepository.DeleteBySql(s=>s.Id==999);
         }
-        public int Delete(TestData entity)
+        public int Delete(int id)
         {
-            return TestDataRepository.Delete(predicate);
+            TestDataRepository.DeleteBySql(null);
+            return UnitOfWork.Commit();
         }
+
+        public int Update(Expression<Func<TestData, object>> propertyExpression, params TestData[] entities)
+        {
+            TestDataRepository.Update(propertyExpression, false, entities);
+            return UnitOfWork.Commit();
+        }
+
         /// <summary>
         /// 修改
         /// </summary>
@@ -82,6 +90,7 @@ namespace Core.Service.Impl
         /// <returns></returns>
         public int Update(Expression<Func<TestData, bool>> predicate1, Expression<Func<TestData, TestData>> predicate2)
         {
+          //  Update(s=>new TestData{Id = } )
             return TestDataRepository.Update(predicate1, predicate2);
         }
 

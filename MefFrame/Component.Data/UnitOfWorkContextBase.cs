@@ -5,7 +5,10 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System.Linq.Expressions;
 using Component.Tools;
+using Component.Tools.Extensions;
+using Tools.DeleteSqlText;
 
 namespace Component.Data
 {
@@ -163,5 +166,25 @@ namespace Component.Data
                 Context.Configuration.AutoDetectChangesEnabled = true;
             }
         }
+
+        public void DeleteBySql<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
+        {
+            try
+            {
+                string sql = Context.Set<TEntity>().GetDeleteSql(predicate);
+                Context.Database.ExecuteSqlCommand(sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("数据删除时发生异常:" + ex.Message);
+            }
+        }
+
+        public void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities) where TEntity : class
+        {
+            Context.Update(propertyExpression, entities);
+        }
+
+
     }
 }

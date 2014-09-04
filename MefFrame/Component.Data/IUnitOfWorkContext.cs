@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace Component.Data
 {
@@ -50,5 +51,9 @@ namespace Component.Data
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entities"> 要注册的对象集合 </param>
         void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity : class; //where TEntity : Entity;
+
+        void DeleteBySql<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
+
+        void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities) where TEntity : class;
     }
 }

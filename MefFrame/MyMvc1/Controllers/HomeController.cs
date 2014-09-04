@@ -32,11 +32,9 @@ namespace MyMvc1.Controllers
         [HttpPost]
         public ActionResult Add(MenuView model)
         {
-          
             TestDataContract.AddMenu(new MenuView { Name = model.Name });
             var list = TestDataContract.Menus();
             return View("Index", list);
-           
         }
 
     }

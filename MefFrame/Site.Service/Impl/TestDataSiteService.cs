@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.ComponentModel.Composition;
 using Core.Service.Impl;
@@ -28,7 +29,9 @@ namespace Site.Service.Impl
         public int DeleteMenu(int id)
 
         {
-            return Delete(s => s.Id == id);
+            Expression<Func<TestData, bool>> predicate = s => s.Id == id;
+            Delete(s => s.Id == id);
+            return UnitOfWork.Commit();
         }
 
         public int AddMenu(MenuView model)
