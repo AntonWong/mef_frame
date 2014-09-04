@@ -8,7 +8,6 @@ using System.Data.SqlClient;
 using System.Linq.Expressions;
 using Component.Tools;
 using Component.Tools.Extensions;
-using Tools.DeleteSqlText;
 
 namespace Component.Data
 {
@@ -39,7 +38,7 @@ namespace Component.Data
             }
             try
             {
-               
+
                 int result = Context.SaveChanges();
                 IsCommitted = true;
                 return result;
@@ -48,8 +47,8 @@ namespace Component.Data
             {
                 //if (e.InnerException != null && e.InnerException.InnerException is SqlException)
                 //{
-                    //var sqlEx = e.InnerException.InnerException as SqlException;
-                    //string msg = DataHelper.GetSqlExceptionMessage(sqlEx.Number);
+                //var sqlEx = e.InnerException.InnerException as SqlException;
+                //string msg = DataHelper.GetSqlExceptionMessage(sqlEx.Number);
                 throw new Exception(e.Message);
                 //}
                 //throw;
@@ -151,7 +150,7 @@ namespace Component.Data
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entities"> 要注册的对象集合 </param>
         public void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
-            //where TEntity : Entity
+        //where TEntity : Entity
         {
             try
             {
@@ -166,12 +165,14 @@ namespace Component.Data
                 Context.Configuration.AutoDetectChangesEnabled = true;
             }
         }
-
-        public void DeleteBySql<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
+        /// <summary>
+        /// 执行SQL语句
+        /// </summary>
+        /// <param name="sql"></param>
+        public void ExecuteSqlCommand(string sql)
         {
             try
             {
-                string sql = Context.Set<TEntity>().GetDeleteSql(predicate);
                 Context.Database.ExecuteSqlCommand(sql);
             }
             catch (Exception ex)
@@ -179,11 +180,23 @@ namespace Component.Data
                 throw new Exception("数据删除时发生异常:" + ex.Message);
             }
         }
+        //public void DeleteBySql<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class
+        //{
+        //    try
+        //    {
+        //        string sql = Context.Set<TEntity>().GetDeleteSql(predicate);
+        //        Context.Database.ExecuteSqlCommand(sql);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("数据删除时发生异常:" + ex.Message);
+        //    }
+        //}
 
-        public void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities) where TEntity : class
-        {
-            Context.Update(propertyExpression, entities);
-        }
+        //public void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities) where TEntity : class
+        //{
+        //    Context.Update(propertyExpression, entities);
+        //}
 
 
     }
