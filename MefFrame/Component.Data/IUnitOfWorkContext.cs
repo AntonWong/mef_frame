@@ -52,8 +52,10 @@ namespace Component.Data
         /// <param name="entities"> 要注册的对象集合 </param>
         void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity : class; //where TEntity : Entity;
 
-        void DeleteBySql<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
-
-        void Update<TEntity>(Expression<Func<TEntity, object>> propertyExpression, params TEntity[] entities) where TEntity : class;
+        /// <summary>
+        /// 执行SQL语句
+        /// </summary>
+        /// <param name="sql"></param>
+        void ExecuteSqlCommand(string sql);
     }
 }
