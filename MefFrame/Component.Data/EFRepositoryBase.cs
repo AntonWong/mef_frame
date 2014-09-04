@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Component.Tools;
 using EntityFramework.Extensions;
+using System.Data.Entity;
 
 namespace Component.Data
 {
@@ -13,7 +14,7 @@ namespace Component.Data
     /// </summary>
     /// <typeparam name="TEntity">动态实体类型</typeparam>
     public abstract class EFRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
-        // : IRepository<TEntity> where TEntity : Entity
+    // : IRepository<TEntity> where TEntity : Entity
     {
         #region 属性
 
@@ -22,6 +23,7 @@ namespace Component.Data
         /// </summary>
         [Import]
         public IUnitOfWork UnitOfWork { get; set; }
+
 
         /// <summary>
         ///     获取或设置 EntityFramework的数据仓储上下文
@@ -120,22 +122,30 @@ namespace Component.Data
         ///     删除所有符合特定表达式的数据
         /// </summary>
         /// <param name="predicate"> 查询条件谓语表达式 </param>
-        /// <param name="isSave"> 是否执行保存 </param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns> 操作影响的行数 </returns>
-        public virtual int Delete(Expression<Func<TEntity, bool>> predicate)
+        public virtual int Delete(Expression<Func<TEntity, bool>> predicate, bool isSave = false)
         {
-            return Entities.Delete(predicate);
+            if (isSave) return Entities.Delete(predicate);
+            string sql = Entities.Where(predicate).GetDeleteSQL();
+            EFContext.ExecuteSqlCommand(sql);
+            return 0;
+
         }
 
         /// <summary>
         ///     修改操作
         /// </summary>
-        /// <param name="fun1">查询条件-谓语表达式</param>
-        /// <param name="fun2">实体-谓语表达式</param>
+        /// <param name="filterExpression">查询条件-谓语表达式</param>
+        /// <param name="updateExpression">实体-谓语表达式</param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns>操作影响的行数</returns>
-        public virtual int Update(Expression<Func<TEntity, bool>> fun1, Expression<Func<TEntity, TEntity>> fun2)
+        public virtual int Update(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TEntity>> updateExpression, bool isSave = false)
         {
-            return Entities.Update(fun1, fun2);
+            if (isSave) return Entities.Update(filterExpression, updateExpression);
+            string strSql = Entities.GetUpdateSQL(filterExpression, updateExpression);
+            EFContext.ExecuteSqlCommand(strSql);
+            return 0;
         }
 
         /// <summary>
@@ -149,18 +159,6 @@ namespace Component.Data
             return EFContext.Set<TEntity>().Find(key);
         }
 
-        public virtual int DeleteBySql(Expression<Func<TEntity, bool>> predicate, bool isSave = false)
-        {
-            EFContext.DeleteBySql(predicate);
-            return isSave ? EFContext.Commit() : 0;
-        }
-
-        public virtual int Update(Expression<Func<TEntity, object>> propertyExpression,
-            bool isSave = false, params TEntity[] entities)
-        {
-            EFContext.Update(propertyExpression,entities);
-            return isSave ? EFContext.Commit() : 0;
-        }
 
         #endregion
     }
