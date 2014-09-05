@@ -52,7 +52,7 @@
     <Compile Include="DataAccessException.cs" />
     <Compile Include="ExceptionMessage.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\EntityFrameworkUpdate.cs" />
+    <Compile Include="Extensions\EFExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
