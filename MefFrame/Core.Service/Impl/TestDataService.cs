@@ -1,20 +1,12 @@
 ﻿//------------------------------------------------------------------------------
-// <copyright file="TestDataConfiguration.generated.cs">
-//        生成时间：2014-09-02 13:50
-// </copyright>
+//Copyright ©车易拍-公共服务组团队. All Rights Reserved.
 //------------------------------------------------------------------------------
 using Core.Data.Repositories;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Data.Entity.ModelConfiguration;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using Component.Data;
 using Core.Models;
-using EntityFramework.Extensions;
 
 
 namespace Core.Service.Impl
@@ -22,7 +14,7 @@ namespace Core.Service.Impl
     /// <summary>
     /// ——TestData
     /// </summary>    
-    public partial class TestDataService : CoreServiceBase, ITestDataContract
+    public class TestDataService : CoreServiceBase, ITestDataContract
     {
         #region 受保护属性 获取或设置数据访问对象
 
@@ -50,48 +42,30 @@ namespace Core.Service.Impl
         /// <returns></returns>
         public int Insert(TestData entity)
         {
-          
-            int result =  TestDataRepository.Insert(entity,false);
-            TestDatas.Delete(s => s.Id == 1);
-            string name = "AAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAA";
-            TestDataRepository.Insert(new TestData {Name = name});
-            return  TestDataRepository.Delete(s => s.Id == 12);
-            // TestDatas.
-            //TestDataRepository.
-            //UnitOfWork.Commit();
-
+            return TestDataRepository.Insert(entity);
         }
         /// <summary>
-        /// 删除
+        /// 删除-根据ID删除实体
         /// </summary>
-        /// <param name="predicate">Lamda表达式</param>
-        /// <returns></returns>
-        public int Delete(Expression<Func<TestData, bool>> predicate)
+        /// <param name="id"> ID主键 </param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns> 操作影响的行数 </returns>
+         public int Delete(int id,bool isSave=false)
         {
-            return TestDataRepository.DeleteBySql(s=>s.Id==999);
+            //return TestDataRepository.Delete(m=>m.Id==id,isSave);
+            return 0;
         }
-        public int Delete(int id)
-        {
-            TestDataRepository.DeleteBySql(null);
-            return UnitOfWork.Commit();
-        }
-
-        public int Update(Expression<Func<TestData, object>> propertyExpression, params TestData[] entities)
-        {
-            TestDataRepository.Update(propertyExpression, false, entities);
-            return UnitOfWork.Commit();
-        }
-
         /// <summary>
-        /// 修改
+        /// 修改-根据ID修改实体
         /// </summary>
-        /// <param name="predicate1">Lamda表达式 条件</param>
-        /// <param name="predicate2">Lamda表达式 修改实体</param>
+        /// <param name="id">主键ID</param>
+        /// <param name="updateExpression">Lamda表达式 修改实体</param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns></returns>
-        public int Update(Expression<Func<TestData, bool>> predicate1, Expression<Func<TestData, TestData>> predicate2)
+        public int Update(int id, Expression<Func<TestData, TestData>> updateExpression,bool isSave=false)
         {
-          //  Update(s=>new TestData{Id = } )
-            return TestDataRepository.Update(predicate1, predicate2);
+            //return TestDataRepository.Update(m=>m.Id==id, updateExpression, isSave);
+            return 0;
         }
 
         #endregion

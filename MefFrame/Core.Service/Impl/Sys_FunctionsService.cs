@@ -1,18 +1,11 @@
 ﻿//------------------------------------------------------------------------------
-// <copyright file="Sys_FunctionsConfiguration.generated.cs">
-//        生成时间：2014-09-02 13:50
-// </copyright>
+//Copyright ©车易拍-公共服务组团队. All Rights Reserved.
 //------------------------------------------------------------------------------
 using Core.Data.Repositories;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Data.Entity.ModelConfiguration;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using Component.Data;
 using Core.Models;
 
 
@@ -21,7 +14,7 @@ namespace Core.Service.Impl
     /// <summary>
     /// ——Sys_Functions
     /// </summary>    
-    public partial class Sys_FunctionsService : CoreServiceBase, ISys_FunctionsContract
+    public class Sys_FunctionsService : CoreServiceBase, ISys_FunctionsContract
     {
         #region 受保护属性 获取或设置数据访问对象
 
@@ -52,23 +45,27 @@ namespace Core.Service.Impl
             return Sys_FunctionsRepository.Insert(entity);
         }
         /// <summary>
-        /// 删除
+        /// 删除-根据ID删除实体
         /// </summary>
-        /// <param name="predicate">Lamda表达式</param>
-        /// <returns></returns>
-        public int Delete(Expression<Func<Sys_Functions, bool>> predicate)
+        /// <param name="id"> ID主键 </param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns> 操作影响的行数 </returns>
+         public int Delete(int id,bool isSave=false)
         {
-            return Sys_FunctionsRepository.Delete(predicate);
+            //return Sys_FunctionsRepository.Delete(m=>m.Id==id,isSave);
+            return 0;
         }
         /// <summary>
-        /// 修改
+        /// 修改-根据ID修改实体
         /// </summary>
-        /// <param name="predicate1">Lamda表达式 条件</param>
-        /// <param name="predicate2">Lamda表达式 修改实体</param>
+        /// <param name="id">主键ID</param>
+        /// <param name="updateExpression">Lamda表达式 修改实体</param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns></returns>
-        public int Update(Expression<Func<Sys_Functions, bool>> predicate1, Expression<Func<Sys_Functions, Sys_Functions>> predicate2)
+        public int Update(int id, Expression<Func<Sys_Functions, Sys_Functions>> updateExpression,bool isSave=false)
         {
-            return Sys_FunctionsRepository.Update(predicate1, predicate2);
+            //return Sys_FunctionsRepository.Update(m=>m.Id==id, updateExpression, isSave);
+            return 0;
         }
 
         #endregion

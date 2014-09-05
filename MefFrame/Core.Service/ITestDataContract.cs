@@ -1,15 +1,10 @@
 ﻿//------------------------------------------------------------------------------
-// <copyright file="TestDataConfiguration.generated.cs">
-//        生成时间：2014-09-02 13:50
-// </copyright>
+//Copyright ©车易拍-公共服务组团队. All Rights Reserved.
 //------------------------------------------------------------------------------
 using Core.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using Component.Data;
 
 namespace Core.Service
 {
@@ -23,10 +18,22 @@ namespace Core.Service
         IQueryable<TestData> TestDatas { get; }
         //添加
         int Insert(TestData entity);
-        //删除
-        int Delete(Expression<Func<TestData, bool>> predicate);
-        //修改
-        int Update(Expression<Func<TestData, bool>> predicate1, Expression<Func<TestData, TestData>> predicate2);
-       
+        /// <summary>
+        ///  删除-根据ID删除实体
+        /// </summary>
+        /// <param name="id"> 主键ID </param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns> 操作影响的行数 </returns>
+        int Delete(int id,bool isSave=false);
+        /// <summary>
+
+        ///  修改-根据ID修改实体
+        /// </summary>
+        /// <param name="id">主键ID</param>
+        /// <param name="updateExpression">Lamda表达式 修改实体</param>
+        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <returns></returns>
+        int Update(int id, Expression<Func<TestData, TestData>> updateExpression,bool isSave=false);
+   
     }
 }

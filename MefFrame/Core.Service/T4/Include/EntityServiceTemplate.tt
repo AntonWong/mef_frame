@@ -27,14 +27,9 @@ public class EntityServiceTemplate : CSharpTemplate
 //------------------------------------------------------------------------------
 using Core.Data.Repositories<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Data.Entity.ModelConfiguration;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using Component.Data;
 using Core.Models<#= _model.UseModuleDir ? "." + _model.ModuleName : "" #>;
 
 
@@ -43,7 +38,7 @@ namespace Core.Service.Impl
     /// <summary>
     /// ——<#= _model.Description #>
     /// </summary>    
-    public partial class <#= _model.Name #>Service : CoreServiceBase, I<#= _model.Name #>Contract
+    public class <#= _model.Name #>Service : CoreServiceBase, I<#= _model.Name #>Contract
     {
         #region 受保护属性 获取或设置数据访问对象
 
@@ -76,7 +71,7 @@ namespace Core.Service.Impl
         /// <summary>
         /// 删除-根据ID删除实体
         /// </summary>
-        /// <param name="predicate"> 查询条件谓语表达式 </param>
+        /// <param name="id"> ID主键 </param>
         /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns> 操作影响的行数 </returns>
          public int Delete(int id,bool isSave=false)
