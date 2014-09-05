@@ -17,7 +17,7 @@ namespace Site.Service.Impl
     /// ——Sys_Menu
     /// </summary>  
     [Export(typeof(ISys_MenuSiteContract))]
-    internal class Sys_MenuSiteService : Sys_MenuService, ISys_MenuSiteContract
+    internal class Sys_MenuSiteService : SysMenuService, ISys_MenuSiteContract
     {
        
     }

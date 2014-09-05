@@ -20,8 +20,10 @@ namespace Site.Service
     {
         List<MenuView> Menus();
 
+        MenuView Menu(int id);
+
         int DeleteMenu(int id);
 
-        int AddMenu(MenuView model);
+        int SaveMenu(MenuView model);
     }
 }

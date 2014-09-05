@@ -13,29 +13,74 @@ namespace MyMvc1.Controllers
         [Import]
         public ITestDataSiteContract TestDataContract { get; set; }
 
-        public ActionResult Index()
+        /// <summary>
+        /// 列表
+        /// CreateDate:2014年9月5日 10:25:29
+        /// Author:王旭东
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult List()
         {
             var list = TestDataContract.Menus();
             return View(list);
         }
 
+        /// <summary>
+        /// 单条实体
+        /// CreateDate:2014-09-05 10:26:25
+        /// Author:王旭东
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Edit(int id = 0)
+        {
+            //修改读取
+            if (id > 0)
+            {
+                var model = TestDataContract.Menu(id);
+                return View(model);
+            }
+            //新增
+            return View(new MenuView());
+
+        }
+
+        /// <summary>
+        /// 删除
+        /// CreateDate:2014-09-05 10:26:52
+        /// Author:王旭东
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var i = 1;
-            i = TestDataContract.DeleteMenu(id);
-            var result = new { id = i, message = "删除成功" };
-
-            return Json(result);
+            var i = TestDataContract.DeleteMenu(id);
+           
+            if (i < 1)
+            {
+                var result = new { status = i, message = "删除失败！" };
+                return Json(result);
+            }
+            return Json(new { status = i, message = "删除成功！" });
         }
 
+        /// <summary>
+        /// 保存 （新增、修改）
+        /// CreateDate:2014年9月5日 10:27:27
+        /// Author：王旭东
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Add(MenuView model)
+        public ActionResult Sava(MenuView model)
         {
-            TestDataContract.AddMenu(new MenuView { Name = model.Name });
+            TestDataContract.SaveMenu(model);
             var list = TestDataContract.Menus();
-            return View("Index", list);
+            return View("List", list);
         }
+
+       
 
     }
 }

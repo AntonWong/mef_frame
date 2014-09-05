@@ -17,7 +17,7 @@ namespace Site.Service.Impl
     /// ——Sys_Functions
     /// </summary>  
     [Export(typeof(ISys_FunctionsSiteContract))]
-    internal class SysFunctionsSiteService : Sys_FunctionsService, ISys_FunctionsSiteContract
+    internal class SysFunctionsSiteService : SysFunctionsService, ISys_FunctionsSiteContract
     {
        
     }

@@ -21,24 +21,54 @@ namespace Site.Service.Impl
     [Export(typeof(ITestDataSiteContract))]
     internal class TestDataSiteService : TestDataService, ITestDataSiteContract
     {
+        /// <summary>
+        /// 列表集合
+        /// </summary>
+        /// <returns></returns>
         public List<MenuView> Menus()
         {
             return TestDatas.Select(s => new MenuView {Id = s.Id, Name = s.Name}).ToList();
         }
-
+        /// <summary>
+        /// 实体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public MenuView Menu(int id)
+        {
+            return TestDatas.Where(m=>m.Id==id).Select(s => new MenuView {Id = s.Id, Name = s.Name}).FirstOrDefault();
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int DeleteMenu(int id)
 
         {
-            Expression<Func<TestData, bool>> predicate = s => s.Id == id;
-            Delete(s => s.Id == id);
+            Delete(id);
             return UnitOfWork.Commit();
         }
-
-        public int AddMenu(MenuView model)
+        /// <summary>
+        /// 保存
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public int SaveMenu(MenuView model)
         {
             try
             {
-                return Insert(new TestData { Name = model.Name });
+                if (model.Id > 0)
+                {
+                    UpdateEntity(m => new {m.Name}, new TestData {Id = model.Id, Name = model.Name});
+                   // Update(model.Id, m => new TestData {Name = model.Name},true);
+                    return UnitOfWork.Commit();
+                }
+                else
+                {
+                    return Insert(new TestData { Name = model.Name });
+                }
+                
             }
             catch (Exception ex)
             {

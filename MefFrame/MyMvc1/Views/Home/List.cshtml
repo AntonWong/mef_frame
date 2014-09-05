@@ -1,4 +1,5 @@
-﻿@using Site.Models
+﻿@using System.Web.UI.WebControls
+@using Site.Models
 @model  List<Site.Models.MenuView>
 @{
     Layout = null;
@@ -14,9 +15,9 @@
         <script src="~/js/jquery.unobtrusive-ajax.min.js"> </script>
         <script>
             function GetResult(data) {
-
-                // alert("data:" + data.message);
-                location.href = "/Home/Index";
+                var msg = eval("(" + data.response + ")");
+                alert(msg.message);
+                if (msg.status > 0) location.href = "/Home/List";
             }
         </script>
         <title>Index</title>
@@ -31,15 +32,16 @@
                 </form>
                 -->
             <!-- 添加方法二  -->
-            @using (Html.BeginForm("Add", "Home", FormMethod.Post))
+           @* @using (Html.BeginForm("Add", "Home", FormMethod.Post))
             {
+                <input type="hidden" name="id"/>
                 <input name="name" type="text"/>
                 <input type="submit" value="添加"  />
-            }
+            }*@
        
 
        
-
+            <a href="@Url.Content("~/home/edit")">新增</a>
             <!-- 列表 -->
             <table border="1">
                 <th>ID</th>
@@ -52,8 +54,9 @@
                             <td>@item.Id</td>
                             <td>@item.Name</td>
                             <td>
-                                <!-- 删除 Ajax方法 -->                   
+                                <!--Ajax 删除方法 -->                   
                                 @Ajax.ActionLink("删除", "Delete", new {id = item.Id}, new AjaxOptions {HttpMethod = "post", Confirm = "确定删除吗？", OnComplete = "GetResult"})
+                                | <a href=@Url.Content("~/home/edit/")@item.Id>修改</a>
                             </td>
                         </tr>
                     }
