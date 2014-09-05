@@ -31,6 +31,6 @@ namespace Component.Data
         }
 
         [Import("EF", typeof (DbContext))]
-        private EFDbContext EFDbContext { get; set; }
+        public EFDbContext EFDbContext { get; set; }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq.Expressions;
-using Component.Tools;
-using Component.Tools.Extensions;
+using System.Reflection;
 
 namespace Component.Data
 {
@@ -165,6 +162,53 @@ namespace Component.Data
                 Context.Configuration.AutoDetectChangesEnabled = true;
             }
         }
+
+        #region 按需修改实体
+        /// <summary>
+        /// 按需修改实体 调用方法 例如：dbContext.UpdateEntity<Member/>(m => new  {m.Password,m.AddDate}, member);
+        /// CreateDate:2014年9月5日 17:17:32
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="propertyExpression">需要修改的属性字段</param>
+        /// <param name="entities">实体-可变长度数组</param>
+        public void UpdateEntity<TEntity>(Expression<Func<TEntity, object>> propertyExpression,
+            params TEntity[] entities) where TEntity : class
+        {
+             if (propertyExpression == null) throw new ArgumentNullException("propertyExpression");
+            if (entities == null) throw new ArgumentNullException("entities");
+            ReadOnlyCollection<MemberInfo> memberInfos = ((dynamic)propertyExpression.Body).Members;
+            foreach (TEntity entity in entities)
+            {
+                DbEntityEntry<TEntity> entry = Context.Entry(entity);
+                entry.State = EntityState.Unchanged;
+                foreach (var memberInfo in memberInfos)
+                {
+                    entry.Property(memberInfo.Name).IsModified = true;
+                }
+                Context.Configuration.ValidateOnSaveEnabled = false;
+            }
+        }
+        #endregion
+
+        #region 根据主键ID删除实体
+        /// <summary>
+        /// 根据主键ID删除实体
+        /// 调用方法 例如：dbContext.DeleteEntity<Member/>(new Member { Id = 1 });
+        /// CreateDate:2014年9月5日 17:17:51
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities"></param>
+        public void DeleteEntity<TEntity>(params TEntity[] entities) where TEntity : class
+        {
+            foreach (TEntity entity in entities)
+            {
+                DbEntityEntry<TEntity> entry = Context.Entry(entity);
+                Context.Configuration.ValidateOnSaveEnabled = false;
+                entry.State = EntityState.Deleted;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 执行SQL语句
         /// </summary>

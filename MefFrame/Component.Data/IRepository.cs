@@ -38,14 +38,7 @@ namespace Component.Data
         /// <returns> 操作影响的行数 </returns>
         int Insert(IEnumerable<TEntity> entities, bool isSave = true);
 
-        /// <summary>
-        ///     删除所有符合特定表达式的数据
-        /// </summary>
-        /// <param name="predicate"> 查询条件谓语表达式 </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
-        /// <returns> 操作影响的行数 </returns>
-        int Delete(object id, bool isSave = true);
-
+     
         /// <summary>
         ///     删除实体记录
         /// </summary>
@@ -66,25 +59,37 @@ namespace Component.Data
         ///     删除所有符合特定表达式的数据
         /// </summary>
         /// <param name="predicate"> 查询条件谓语表达式 </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns> 操作影响的行数 </returns>
-        int Delete(Expression<Func<TEntity, bool>> predicate, bool isSave = false);
+        int Delete(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         ///     修改操作
         /// </summary>
         /// <param name="filterExpression">查询条件-谓语表达式</param>
         /// <param name="updateExpression">实体-谓语表达式</param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns>操作影响的行数</returns>
-        int Update(Expression<Func<TEntity, bool>> fun1, Expression<Func<TEntity, TEntity>> fun2, bool isSave = false);
+        int Update(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TEntity>> updateExpression);
 
         /// <summary>
-        ///     查找指定主键的实体记录
+        /// 按需修改实体 调用方法 例如：dbContext.UpdateEntity<Member/>(m => new  {m.Password,m.AddDate}, member);
+        /// CreateDate:2014年9月5日 17:17:32
         /// </summary>
-        /// <param name="key"> 指定主键 </param>
-        /// <returns> 符合编号的记录，不存在返回null </returns>
-        TEntity GetByKey(object key);
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="propertyExpression">需要修改的属性字段</param>
+        /// <param name="isSave"></param>
+        /// <param name="entities">实体-可变长度数组</param>
+        int UpdateEntity(Expression<Func<TEntity, object>> propertyExpression,bool isSave =false,
+            params TEntity[] entities);
+
+
+        /// <summary>
+        /// 根据主键ID删除实体
+        /// 调用方法 例如：dbContext.DeleteEntity<Member/>(new Member { Id = 1 });
+        /// CreateDate:2014年9月5日 17:17:51
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities"></param>
+        void DeleteEntity(params TEntity[] entities);
 
         #endregion
     }

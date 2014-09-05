@@ -38,9 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.Extended, Version=5.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.Extended.6.0\EntityFramework.Extended.dll</HintPath>
+      <HintPath>..\..\..\wxd\源码下载\EntityFramework.Extended-master\Source\EntityFramework.Extended\bin\Debug\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
@@ -60,7 +60,9 @@
     <Compile Include="DbSetEntity.cs" />
     <Compile Include="EFDbContext.cs" />
     <Compile Include="EFRepositoryBase.cs" />
-    <Compile Include="EFRepositoryContext.cs" />
+    <Compile Include="EFRepositoryContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IEntityMapper.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />

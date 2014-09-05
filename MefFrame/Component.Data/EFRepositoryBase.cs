@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Component.Tools;
 using EntityFramework.Extensions;
-using System.Data.Entity;
 
 namespace Component.Data
 {
@@ -122,15 +121,10 @@ namespace Component.Data
         ///     删除所有符合特定表达式的数据
         /// </summary>
         /// <param name="predicate"> 查询条件谓语表达式 </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns> 操作影响的行数 </returns>
-        public virtual int Delete(Expression<Func<TEntity, bool>> predicate, bool isSave = false)
+        public virtual int Delete(Expression<Func<TEntity, bool>> predicate)
         {
-            if (isSave) return Entities.Delete(predicate);
-            string sql = Entities.Where(predicate).GetDeleteSQL();
-            EFContext.ExecuteSqlCommand(sql);
-            return 0;
-
+            return Entities.Where(predicate).Delete();
         }
 
         /// <summary>
@@ -138,28 +132,39 @@ namespace Component.Data
         /// </summary>
         /// <param name="filterExpression">查询条件-谓语表达式</param>
         /// <param name="updateExpression">实体-谓语表达式</param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns>操作影响的行数</returns>
-        public virtual int Update(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TEntity>> updateExpression, bool isSave = false)
+        public virtual int Update(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TEntity>> updateExpression)
         {
-            if (isSave) return Entities.Update(filterExpression, updateExpression);
-            string strSql = Entities.GetUpdateSQL(filterExpression, updateExpression);
-            EFContext.ExecuteSqlCommand(strSql);
-            return 0;
+           return Entities.Update(filterExpression, updateExpression);
+        }
+        #endregion
+
+        /// <summary>
+        /// 按需修改实体 调用方法 例如：dbContext.UpdateEntity<Member/>(m => new  {m.Password,m.AddDate}, member);
+        /// CreateDate:2014年9月5日 17:17:32
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="propertyExpression">需要修改的属性字段</param>
+        /// <param name="isSave"></param>
+        /// <param name="entities">实体-可变长度数组</param>
+        public int UpdateEntity(Expression<Func<TEntity, object>> propertyExpression,bool isSave =false,
+            params TEntity[] entities)
+        {
+            EFContext.UpdateEntity(propertyExpression, entities);
+            return isSave ? EFContext.Commit() : 0;
         }
 
         /// <summary>
-        ///     查找指定主键的实体记录
+        /// 根据主键ID删除实体
+        /// 调用方法 例如：dbContext.DeleteEntity<Member/>(new Member { Id = 1 });
+        /// CreateDate:2014年9月5日 17:17:51
         /// </summary>
-        /// <param name="key"> 指定主键 </param>
-        /// <returns> 符合编号的记录，不存在返回null </returns>
-        public virtual TEntity GetByKey(object key)
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities"></param>
+        public void DeleteEntity(params TEntity[] entities)
         {
-            PublicHelper.CheckArgument(key, "key");
-            return EFContext.Set<TEntity>().Find(key);
+            EFContext.DeleteEntity(entities);
         }
 
-
-        #endregion
     }
 }
