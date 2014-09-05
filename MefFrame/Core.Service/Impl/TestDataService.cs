@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Models;
+using EntityFramework.Extensions;
 
 
 namespace Core.Service.Impl
@@ -44,17 +45,17 @@ namespace Core.Service.Impl
         {
             return TestDataRepository.Insert(entity);
         }
+
         /// <summary>
         /// 删除-根据ID删除实体
         /// </summary>
         /// <param name="id"> ID主键 </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns> 操作影响的行数 </returns>
-         public int Delete(int id,bool isSave=false)
+        public void Delete(int id)
         {
-            //return TestDataRepository.Delete(m=>m.Id==id,isSave);
-            return 0;
+            TestDataRepository.DeleteEntity(new TestData{Id=id});
         }
+
         /// <summary>
         /// 修改-根据ID修改实体
         /// </summary>
@@ -68,7 +69,16 @@ namespace Core.Service.Impl
             return 0;
         }
 
+        public int UpdateEntity(Expression<Func<TestData, object>> propertyExpression,TestData entity,bool isSave=false)
+        {
+            return TestDataRepository.UpdateEntity(propertyExpression, isSave, entity);
+            
+        }
+
         #endregion
+
+
+
        
     }
 }

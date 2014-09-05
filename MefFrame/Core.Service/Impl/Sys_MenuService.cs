@@ -14,7 +14,7 @@ namespace Core.Service.Impl
     /// <summary>
     /// ——Sys_Menu
     /// </summary>    
-    public class Sys_MenuService : CoreServiceBase, ISys_MenuContract
+    public class SysMenuService : CoreServiceBase, ISys_MenuContract
     {
         #region 受保护属性 获取或设置数据访问对象
 

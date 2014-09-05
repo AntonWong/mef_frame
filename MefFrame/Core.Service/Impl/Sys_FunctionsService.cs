@@ -14,7 +14,7 @@ namespace Core.Service.Impl
     /// <summary>
     /// ——Sys_Functions
     /// </summary>    
-    public class Sys_FunctionsService : CoreServiceBase, ISys_FunctionsContract
+    public class SysFunctionsService : CoreServiceBase, ISys_FunctionsContract
     {
         #region 受保护属性 获取或设置数据访问对象
 

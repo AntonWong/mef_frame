@@ -22,9 +22,8 @@ namespace Core.Service
         ///  删除-根据ID删除实体
         /// </summary>
         /// <param name="id"> 主键ID </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns> 操作影响的行数 </returns>
-        int Delete(int id,bool isSave=false);
+        void Delete(int id);
         /// <summary>
 
         ///  修改-根据ID修改实体
@@ -34,6 +33,7 @@ namespace Core.Service
         /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
         /// <returns></returns>
         int Update(int id, Expression<Func<TestData, TestData>> updateExpression,bool isSave=false);
-   
+
+        int UpdateEntity(Expression<Func<TestData, object>> propertyExpression, TestData entity, bool isSave = false);
     }
 }
