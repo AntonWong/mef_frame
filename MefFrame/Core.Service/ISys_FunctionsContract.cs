@@ -18,22 +18,23 @@ namespace Core.Service
         IQueryable<Sys_Functions> Sys_Functionss { get; }
         //添加
         int Insert(Sys_Functions entity);
-        /// <summary>
-        ///  删除-根据ID删除实体
-        /// </summary>
-        /// <param name="id"> 主键ID </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
-        /// <returns> 操作影响的行数 </returns>
-        int Delete(int id,bool isSave=false);
-        /// <summary>
 
-        ///  修改-根据ID修改实体
+        /// <summary>
+        /// 删  除
         /// </summary>
-        /// <param name="id">主键ID</param>
-        /// <param name="updateExpression">Lamda表达式 修改实体</param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <param name="id"> ID主键 </param>
+        /// <param name="isSave">是否执行保存</param>
+        /// <returns> 操作影响的行数 </returns>
+        int Delete(int id, bool isSave = false);
+        
+		/// <summary>
+        /// 按需修改
+        /// </summary>
+        /// <param name="propertyExpression">需要修改的字段：.UpdateEntity<Member/>(m => new  {m.Password,m.ModifyDate}, member);</param>
+        /// <param name="entity">实体</param>
+        /// <param name="isSave"></param>
         /// <returns></returns>
-        int Update(int id, Expression<Func<Sys_Functions, Sys_Functions>> updateExpression,bool isSave=false);
+        int Update(Expression<Func<Sys_Functions, object>> propertyExpression,Sys_Functions entity,bool isSave=false);
    
     }
 }
