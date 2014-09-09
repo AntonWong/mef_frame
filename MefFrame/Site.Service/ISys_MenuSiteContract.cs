@@ -16,5 +16,5 @@ namespace Site.Service
     public interface ISys_MenuSiteContract:ISys_MenuContract
     {
        
-    }
+    } 
 }
