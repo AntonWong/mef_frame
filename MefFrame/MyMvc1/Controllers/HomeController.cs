@@ -37,7 +37,8 @@ namespace MyMvc1.Controllers
             //修改读取
             if (id > 0)
             {
-                var model = TestDataContract.Menu(id);
+                var model = TestDataContract.Menu(id)??new MenuView();
+               
                 return View(model);
             }
             //新增
