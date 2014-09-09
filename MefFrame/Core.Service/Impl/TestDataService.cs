@@ -7,7 +7,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Models;
-using EntityFramework.Extensions;
 
 
 namespace Core.Service.Impl
@@ -37,7 +36,7 @@ namespace Core.Service.Impl
 
         #region 公共方法
         /// <summary>
-        /// 添加
+        /// 添   加
         /// </summary>
         /// <param name="entity">实体</param>
         /// <returns></returns>
@@ -45,40 +44,32 @@ namespace Core.Service.Impl
         {
             return TestDataRepository.Insert(entity);
         }
-
-        /// <summary>
-        /// 删除-根据ID删除实体
+        
+		/// <summary>
+        /// 删  除
         /// </summary>
         /// <param name="id"> ID主键 </param>
+		/// <param name="isSave">是否执行保存</param>
         /// <returns> 操作影响的行数 </returns>
-        public void Delete(int id)
+        public int Delete(int id, bool isSave = false)
         {
-            TestDataRepository.DeleteEntity(new TestData{Id=id});
+            return TestDataRepository.DeleteEntity(isSave,new TestData{Id=id});
+			//return 0;
         }
 
         /// <summary>
-        /// 修改-根据ID修改实体
+        /// 按需修改
         /// </summary>
-        /// <param name="id">主键ID</param>
-        /// <param name="updateExpression">Lamda表达式 修改实体</param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <param name="propertyExpression">需要修改的字段：.UpdateEntity<Member/>(m => new  {m.Password,m.ModifyDate}, member);</param>
+        /// <param name="entity">实体</param>
+        /// <param name="isSave"></param>
         /// <returns></returns>
-        public int Update(int id, Expression<Func<TestData, TestData>> updateExpression,bool isSave=false)
-        {
-            //return TestDataRepository.Update(m=>m.Id==id, updateExpression, isSave);
-            return 0;
-        }
-
-        public int UpdateEntity(Expression<Func<TestData, object>> propertyExpression,TestData entity,bool isSave=false)
+        public int Update(Expression<Func<TestData, object>> propertyExpression,TestData entity,bool isSave=false)
         {
             return TestDataRepository.UpdateEntity(propertyExpression, isSave, entity);
-            
         }
 
         #endregion
-
-
-
        
     }
 }

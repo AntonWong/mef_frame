@@ -14,7 +14,7 @@ namespace Core.Service.Impl
     /// <summary>
     /// ——Sys_Menu
     /// </summary>    
-    public class SysMenuService : CoreServiceBase, ISys_MenuContract
+    public class Sys_MenuService : CoreServiceBase, ISys_MenuContract
     {
         #region 受保护属性 获取或设置数据访问对象
 
@@ -36,7 +36,7 @@ namespace Core.Service.Impl
 
         #region 公共方法
         /// <summary>
-        /// 添加
+        /// 添   加
         /// </summary>
         /// <param name="entity">实体</param>
         /// <returns></returns>
@@ -44,28 +44,29 @@ namespace Core.Service.Impl
         {
             return Sys_MenuRepository.Insert(entity);
         }
-        /// <summary>
-        /// 删除-根据ID删除实体
+        
+		/// <summary>
+        /// 删  除
         /// </summary>
         /// <param name="id"> ID主键 </param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+		/// <param name="isSave">是否执行保存</param>
         /// <returns> 操作影响的行数 </returns>
-         public int Delete(int id,bool isSave=false)
+        public int Delete(int id, bool isSave = false)
         {
-            //return Sys_MenuRepository.Delete(m=>m.Id==id,isSave);
-            return 0;
+            //Sys_MenuRepository.DeleteEntity(new Sys_Menu{Id=id});
+			return 0;
         }
+
         /// <summary>
-        /// 修改-根据ID修改实体
+        /// 按需修改
         /// </summary>
-        /// <param name="id">主键ID</param>
-        /// <param name="updateExpression">Lamda表达式 修改实体</param>
-        /// <param name="isSave"> 默认值false;是否执行保存.isSave:true 保存，isSave:false 不保存 </param>
+        /// <param name="propertyExpression">需要修改的字段：.UpdateEntity<Member/>(m => new  {m.Password,m.ModifyDate}, member);</param>
+        /// <param name="entity">实体</param>
+        /// <param name="isSave"></param>
         /// <returns></returns>
-        public int Update(int id, Expression<Func<Sys_Menu, Sys_Menu>> updateExpression,bool isSave=false)
+        public int Update(Expression<Func<Sys_Menu, object>> propertyExpression,Sys_Menu entity,bool isSave=false)
         {
-            //return Sys_MenuRepository.Update(m=>m.Id==id, updateExpression, isSave);
-            return 0;
+            return Sys_MenuRepository.UpdateEntity(propertyExpression, isSave, entity);
         }
 
         #endregion
