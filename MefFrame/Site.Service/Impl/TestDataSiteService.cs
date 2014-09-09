@@ -6,8 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.ComponentModel.Composition;
 using Core.Service.Impl;
 using Core.Models;
@@ -60,20 +58,15 @@ namespace Site.Service.Impl
             {
                 if (model.Id > 0)
                 {
-                    UpdateEntity(m => new {m.Name}, new TestData {Id = model.Id, Name = model.Name});
-                   // Update(model.Id, m => new TestData {Name = model.Name},true);
+                    Update(m => new {m.Name}, new TestData {Id = model.Id, Name = model.Name});
                     return UnitOfWork.Commit();
                 }
-                else
-                {
-                    return Insert(new TestData { Name = model.Name });
-                }
-                
+                return Insert(new TestData { Name = model.Name });
             }
             catch (Exception ex)
             {
                 
-                throw;
+                throw new Exception(ex.Message);
             }
             
         }
