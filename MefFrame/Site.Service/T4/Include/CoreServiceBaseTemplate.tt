@@ -15,7 +15,9 @@ public class CoreServiceBaseTemplate : CSharpTemplate
 	{
 		base.TransformText();
 #>
-
+//------------------------------------------------------------------------------
+//Copyright ©车易拍-公共服务组团队. All Rights Reserved.
+//------------------------------------------------------------------------------
 using System.ComponentModel.Composition;
 using Component.Data;
 
