@@ -87,9 +87,10 @@ namespace Component.Data
         /// 调用方法 例如：dbContext.DeleteEntity<Member/>(new Member { Id = 1 });
         /// CreateDate:2014年9月5日 17:17:51
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TEntity">可变长度数组</typeparam>
+        /// <param name="isSave">是否执行保存</param>
         /// <param name="entities"></param>
-        void DeleteEntity(params TEntity[] entities);
+        int DeleteEntity(bool isSave = false, params TEntity[] entities);
 
         #endregion
     }

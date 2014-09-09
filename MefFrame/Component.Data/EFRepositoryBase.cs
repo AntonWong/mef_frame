@@ -139,6 +139,8 @@ namespace Component.Data
         }
         #endregion
 
+        //Add At 2014年9月5日
+
         /// <summary>
         /// 按需修改实体 调用方法 例如：dbContext.UpdateEntity<Member/>(m => new  {m.Password,m.AddDate}, member);
         /// CreateDate:2014年9月5日 17:17:32
@@ -160,10 +162,12 @@ namespace Component.Data
         /// CreateDate:2014年9月5日 17:17:51
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
+        /// <param name="isSave"></param>
         /// <param name="entities"></param>
-        public void DeleteEntity(params TEntity[] entities)
+        public int DeleteEntity(bool isSave =false,params TEntity[] entities)
         {
             EFContext.DeleteEntity(entities);
+            return isSave ? EFContext.Commit() : 0;
         }
 
     }
